@@ -3,6 +3,7 @@
 
 # Custom Macro Definition (Common part)
 ARCH = RV64
+PLATFORM = DUO
 
 include ../defines.mk
 DEFS +=
@@ -14,8 +15,6 @@ CFLAGS += -march=rv64g -mabi=lp64 -mcmodel=medany
 else
 CFLAGS += -march=rv32g -mabi=ilp32
 endif
-
-LDFLAGS ?= -T os.ld
 
 ifeq (${ARCH}, RV64)
 QEMU = qemu-system-riscv64
@@ -42,6 +41,8 @@ OBJS = ${OBJS_ASM} ${OBJS_C}
 ELF = ${OUTPUT_PATH}/os.elf
 BIN = ${OUTPUT_PATH}/os.bin
 
+LDFLAGS ?= -T ${OUTPUT_PATH}/os.ld.generated
+
 .DEFAULT_GOAL := all
 all: ${OUTPUT_PATH} ${ELF}
 
@@ -49,7 +50,12 @@ ${OUTPUT_PATH}:
 	@${MKDIR} $@
 
 # start.o must be the first in dependency!
+# Before do link, run preprocessor manually for linker script.
+# -E specifies GCC to only run preprocessor
+# -P prevents preprocessor from generating linemarkers (#line directives)
+# -x c tells GCC to treat your linker script as C source file
 ${ELF}: ${OBJS}
+	${CC} -E -P -x c ${DEFS} ${CFLAGS} os.ld > ${OUTPUT_PATH}/os.ld.generated
 	${CC} ${CFLAGS} ${LDFLAGS} -o ${ELF} $^
 	${OBJCOPY} -O binary ${ELF} ${BIN}
 

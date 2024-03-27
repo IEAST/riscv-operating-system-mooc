@@ -3,6 +3,14 @@
  * Linker script for outputting to RVOS
  */
 
+#if defined(CONFIG_PLATFORM_QEMU)
+#include "platform.h"
+#elif defined(CONFIG_PLATFORM_DUO)
+#include "platform_duo.h"
+#else
+#warning "Unsupported Platform!"
+#endif
+
 /*
  * https://sourceware.org/binutils/docs/ld/Miscellaneous-Commands.html
  * OUTPUT_ARCH command specifies a particular output machine architecture.
@@ -47,7 +55,7 @@ ENTRY( _start )
  */
 MEMORY
 {
-	ram   (wxa!ri) : ORIGIN = 0x80000000, LENGTH = 128M
+	ram   (wxa!ri) : ORIGIN = ORIGIN_ADDRESS, LENGTH = LENGTH_RAM
 }
 
 /*
