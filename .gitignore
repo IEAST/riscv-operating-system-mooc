@@ -2,3 +2,4 @@
 *.bin
 *.elf
 *.generated
+!code/os/prebuild/*.bin
