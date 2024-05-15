@@ -9,7 +9,7 @@
 
 /* used in os.ld */
 #define ORIGIN_ADDRESS 0x80000000
-#define LENGTH_RAM 64M
+#define LENGTH_RAM 256M
 
 #define PINMUX_BASE	0x03001000L
 

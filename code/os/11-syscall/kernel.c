@@ -22,14 +22,14 @@ static void _delay(volatile int count)
 }
 
 /*
- * Regarding PinMux info. See CV180xb-Pinout-v1.xlsx
- * @https://github.com/milkv-duo/duo-files/tree/main/duo/datasheet
+ * Regarding PinMux info. See SG2002_TRM_V1.0-alpha.pdf 管脚复用 PINMUX
+ * @https://github.com/milkv-duo/duo-files/tree/main/duo-256M/datasheet
  */
-#define UART0_TX_OFFSET		0x24
+#define UART0_TX_OFFSET		0x40
 #define UART0_TX_FUNCMASK	(uint32_t)(0x7)
 #define UART0_TX_UART1_TX	4
 
-#define UART0_RX_OFFSET		0x28
+#define UART0_RX_OFFSET		0x44
 #define UART0_RX_FUNCMASK	(uint32_t)(0x7)
 #define UART0_RX_UART1_RX	4
 
